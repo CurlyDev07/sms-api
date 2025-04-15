@@ -15,6 +15,37 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('messages')->insert([
+            [
+                'sms_name' => 'Welcome Message',
+                'message' => 'Welcome to our service!',
+                'contact_number' => '09550090156',
+                'days_interval' => 1,
+                'status' => 'pending',
+            ],
+            [
+                'sms_name' => 'Follow-Up Message',
+                'message' => 'Just checking in to see how things are going.',
+                'contact_number' => '09550090156',
+                'days_interval' => 1,
+                'status' => 'pending',
+            ],
+            [
+                'sms_name' => 'Reminder Message',
+                'message' => 'Don\'t forget about our upcoming event!',
+                'contact_number' => '09550090156',
+                'days_interval' => 2,
+                'status' => 'pending',
+            ],
+            [
+                'sms_name' => 'Reminder Message',
+                'message' => 'Don\'t forget about our upcoming event!',
+                'contact_number' => '09550090156',
+                'days_interval' => 3,
+                'status' => 'pending',
+            ],
+            // Add more messages as needed
+        ]);
     }
+
 }
