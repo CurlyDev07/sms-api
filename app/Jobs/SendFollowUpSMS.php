@@ -2,12 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Services\SmsService;
+use App\Models\Event;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class SendFollowUpSMS implements ShouldQueue
 {
@@ -15,18 +17,32 @@ class SendFollowUpSMS implements ShouldQueue
 
     public $event;
 
+    // Inject the SmsService
+    protected $smsService;
+
     public function __construct(Event $event)
     {
         $this->event = $event;
+        $this->smsService = new SmsService(); // Instantiate SmsService
     }
 
     public function handle(): void
     {
-        // Simulate sending SMS
-        Log::info("Sending SMS to {$this->event->contact_number}: {$this->event->message}");
+        // Send SMS using SmsService
+        $response = $this->smsService->infoTextSend($this->event->contact_number, $this->event->message);
 
-        // Update event status
-        $this->event->status = 'sent';
-        $this->event->save();
+        // Check if the SMS was sent successfully (you can modify based on API response)
+        if ($response['status'] == 'success') {
+            // Update event status to 'sent' if the SMS was successful
+            $this->event->status = 'sent';
+            $this->event->save();
+
+            Log::info("SMS sent successfully to {$this->event->contact_number}: {$this->event->message}");
+        } else {
+            // Handle failure (you can modify this based on actual API error response)
+            Log::error("Failed to send SMS to {$this->event->contact_number}: {$this->event->message}");
+            $this->event->status = 'failed';
+            $this->event->save();
+        }
     }
 }
