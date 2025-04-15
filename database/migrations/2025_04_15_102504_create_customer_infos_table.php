@@ -17,7 +17,7 @@ class CreateCustomerInfosTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('contact_number');
-            $table->timestamp()->comment('date where the customer created an order ');
+            $table->timestamps();
         });
     }
 
