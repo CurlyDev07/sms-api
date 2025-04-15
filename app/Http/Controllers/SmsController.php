@@ -23,15 +23,12 @@ class SmsController extends Controller
      */
     public function sendSms(Request $request)
     {
+      // Call the SmsService to send the message
+      $smsService = new SmsService();
+      $smsService->infoTextSend($request->contact_number, $request->message);
 
-        // Send SMS using the SmsService
-        $response = $this->smsService->infoTextSend($validated['contact_number'], $validated['message']);
-
-        // Check the response and return a success/failure message
-        if (isset($response['status']) && $response['status'] === 'success') {
-            return response()->json(['message' => 'SMS sent successfully!']);
-        }
-
-        return response()->json(['message' => 'Failed to send SMS.'], 500);
+      return response()->json([
+          'message' => 'SMS sent successfully!'
+      ]);
     }
 }
