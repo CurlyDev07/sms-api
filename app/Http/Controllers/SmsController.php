@@ -23,11 +23,6 @@ class SmsController extends Controller
      */
     public function sendSms(Request $request)
     {
-        // Validate the inputs
-        $validated = $request->validate([
-            'contact_number' => 'required|regex:/^\d{10}$/',
-            'message' => 'required|string',
-        ]);
 
         // Send SMS using the SmsService
         $response = $this->smsService->infoTextSend($validated['contact_number'], $validated['message']);
