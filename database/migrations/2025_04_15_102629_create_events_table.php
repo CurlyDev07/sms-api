@@ -15,6 +15,11 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
+            $table->string('sms_name');
+            $table->text('message');
+            $table->string('contact_number');
+            $table->integer('days_interval');
+            $table->enum('status', ['pending', 'sent', 'failed'])->default('pending');
             $table->timestamps();
         });
     }

@@ -15,7 +15,9 @@ class CreateCustomerInfosTable extends Migration
     {
         Schema::create('customer_infos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('name');
+            $table->string('contact_number');
+            $table->timestamps()->comment('date where the customer created an order ');
         });
     }
 
