@@ -17,28 +17,32 @@ class DispatchFollowUpSMS extends Command
     public function handle()
     {
         $now = Carbon::now();
-
+    
         $customers = CustomerInfo::all();
-
+    
+        $this->info("Found " . $customers->count() . " customers.");
+    
         foreach ($customers as $customer) {
             $daysSinceOrder = $customer->created_at->diffInDays($now);
-
+    
             // Get all pending events for this contact number where days_interval matches
             $events = Event::where('contact_number', $customer->contact_number)
                 ->where('status', 'pending')
                 ->where('days_interval', $daysSinceOrder)
                 ->get();
-
+    
+            $this->info("Found " . $events->count() . " events for contact number {$customer->contact_number}");
+    
             foreach ($events as $event) {
                 SendFollowUpSMS::dispatch($event);
             }
-
-            // Log if no event found
+    
             if ($events->isEmpty()) {
                 Log::info("No event found for contact number {$customer->contact_number}");
             }
         }
-
+    
         $this->info('Follow-up SMS jobs dispatched!');
     }
+    
 }
