@@ -15,7 +15,7 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('messages')->insert([
+        DB::table('events')->insert([
             [
                 'sms_name' => 'Welcome Message',
                 'message' => 'Welcome to our service!',
