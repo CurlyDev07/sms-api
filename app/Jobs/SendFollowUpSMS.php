@@ -13,23 +13,20 @@ class SendFollowUpSMS implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $event;
+
+    public function __construct(Event $event)
     {
-        //
+        $this->event = $event;
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
-        //
+        // Simulate sending SMS
+        Log::info("Sending SMS to {$this->event->contact_number}: {$this->event->message}");
+
+        // Update event status
+        $this->event->status = 'sent';
+        $this->event->save();
     }
 }
