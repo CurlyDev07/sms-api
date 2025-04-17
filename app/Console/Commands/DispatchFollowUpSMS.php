@@ -22,12 +22,12 @@ class DispatchFollowUpSMS extends Command
         
         foreach ($followUps as $followUp) {
             $createdAt = Carbon::parse($followUp->created_at);
-            $intervalMinutes = $followUp->smsMessage->interval;
+            $intervalDays = $followUp->smsMessage->interval;
         
-            $scheduledTime = $createdAt->addMinutes($intervalMinutes);
+            $scheduledTime = $createdAt->copy()->addDays($intervalDays);
             $now = Carbon::now();
     
-            $diffInMinutes = $now->diffInMinutes($scheduledTime, false); // Use false for absolute difference
+            $diffInDays = $now->diffInDays($scheduledTime, false); // Use false to keep sign
     
             if ($now->greaterThanOrEqualTo($scheduledTime)) {
                 dispatch(new SendFollowUpSMS($followUp->id));
