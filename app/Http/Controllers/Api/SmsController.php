@@ -17,22 +17,22 @@ class SmsController extends Controller
         ]);
     
         $customer = CustomerInfo::create($request->only('name', 'contact_number'));
+        return $customer;
+        // $messages = SmsMessage::all();
 
-        $messages = SmsMessage::all();
+        // foreach ($messages as $follow_up_message) {
+        //     CustomerFollowup::create([
+        //         'name' => $request->name,
+        //         'contact_number' => $request->contact_number,
+        //         'sms_message_id' => $follow_up_message->id, // Make sure this ID exists in sms_messages
+        //         'interval' => $follow_up_message->interval,
+        //     ]);
+        // }
 
-        foreach ($messages as $follow_up_message) {
-            CustomerFollowup::create([
-                'name' => $request->name,
-                'contact_number' => $request->contact_number,
-                'sms_message_id' => $follow_up_message->id, // Make sure this ID exists in sms_messages
-                'interval' => $follow_up_message->interval,
-            ]);
-        }
-
-        return response()->json([
-            'message' => 'customer info created successfully!',
-            'sms_message' => $customer
-        ], 201);
+        // return response()->json([
+        //     'message' => 'customer info created successfully!',
+        //     'sms_message' => $customer
+        // ], 201);
     }
     
     public function create_sms_message(Request $request){
