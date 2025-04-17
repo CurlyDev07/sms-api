@@ -18,6 +18,7 @@ use Illuminate\Support\Carbon;
 Route::get('/', function () {
 
     $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
+    echo count($followUps);
     foreach ($followUps as $followUp) {
         $createdAt = Carbon::parse($followUp->created_at);
         $intervalMinutes = $followUp->smsMessage->interval;

@@ -14,30 +14,30 @@ use Illuminate\Support\Facades\Log;  // <-- Add this line
 class DispatchFollowUpSMS extends Command
 {
     protected $signature = 'sms:dispatch';
-    protected $description = 'Dispatch follow-up SMS based on events and order dates';
+    protected $description = 'Dispatch follow-up SMS based on sms message interval';
 
     public function handle()
     {
-        $response = infoTextSend('09550090156', 'putang ina its working');
-        $this->info('Test SMS sent!');
+        // $response = infoTextSend('09550090156', 'putang ina its working');
+        // $this->info('Test SMS sent!');
 // ==============================================================
         
-        $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
+        // $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
 
-        foreach ($followUps as $followUp) {
-            $createdAt = Carbon::parse($followUp->created_at);
-            $now = Carbon::now();
-            $minutesPassed = $createdAt->diffInMinutes($now);
+        // foreach ($followUps as $followUp) {
+        //     $createdAt = Carbon::parse($followUp->created_at);
+        //     $now = Carbon::now();
+        //     $minutesPassed = $createdAt->diffInMinutes($now);
         
-            $interval = $followUp->smsMessage->interval;
+        //     $interval = $followUp->smsMessage->interval;
         
-            echo "Minutes passed: {$minutesPassed} | Interval: {$interval}\n";
+        //     echo "Minutes passed: {$minutesPassed} | Interval: {$interval}\n";
         
-            // Optional: Check if it’s time to send the SMS
-            if ($minutesPassed >= $interval) {
-                echo "✅ Time to send SMS to {$followUp->contact_number}\n";
-            }
-        }
+        //     // Optional: Check if it’s time to send the SMS
+        //     if ($minutesPassed >= $interval) {
+        //         echo "✅ Time to send SMS to {$followUp->contact_number}\n";
+        //     }
+        // }
 
 
 
