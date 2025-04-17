@@ -12,8 +12,14 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Models\CustomerFollowUp;
 
 Route::get('/', function () {
+
+
+    $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
+
+    dd($followUps);
 
     return view('welcome');
 });

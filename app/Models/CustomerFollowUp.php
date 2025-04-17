@@ -11,4 +11,15 @@ class CustomerFollowUp extends Model
 
     protected $guarded = [];
 
+    public function customerInfo()
+    {
+        return $this->belongsTo(CustomerInfo::class, 'contact_number', 'contact_number');
+    }
+
+    // Relationship to SmsMessage
+    public function smsMessage()
+    {
+        return $this->belongsTo(SmsMessage::class);
+    }
+
 }

@@ -6,6 +6,7 @@ use App\Services\SmsService;
 use Illuminate\Console\Command;
 use App\Models\CustomerInfo;
 use App\Models\Event;
+use App\Models\CustomerFollowUp;
 use App\Jobs\SendFollowUpSMS;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;  // <-- Add this line
@@ -19,6 +20,15 @@ class DispatchFollowUpSMS extends Command
     {
         $response = infoTextSend('09550090156', 'putang ina its working');
         $this->info('Test SMS sent!');
+// ==============================================================
+        
+        $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
+
+
+
+
+
+// ==============================================================
 
 
         // $customers = CustomerInfo::all();
@@ -45,7 +55,7 @@ class DispatchFollowUpSMS extends Command
         //     }
         // }
     
-        // $this->info('Follow-up SMS jobs dispatched!');
+        $this->info('Follow-up SMS jobs dispatched!');
     }
     
 }
