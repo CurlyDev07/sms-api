@@ -29,9 +29,11 @@ Route::get('/', function () {
     
         if ($now->greaterThanOrEqualTo($scheduledTime)) {
             echo "✅ Time to send SMS to {$followUp->contact_number}\n";
+            echo '<br>';
             // You can now trigger SMS or mark as sent
         } else {
             echo "⏳ Not yet time for {$followUp->contact_number}\n";
+            echo '<br>';
         }
     }
 
