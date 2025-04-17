@@ -52,7 +52,7 @@ class SmsController extends Controller
     }
 
     public function get_sms_message(){
-        $messages = SmsMessage::all();
+        $messages = SmsMessage::where('status', 'pending')->get();
 
         return response()->json([
             'status' => 'success',
