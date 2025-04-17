@@ -32,6 +32,7 @@ Route::get('/', function () {
         // Optional: Check if it’s time to send the SMS
         if ($minutesPassed >= $interval) {
             echo "✅ Time to send SMS to {$followUp->contact_number}\n";
+            echo "<br>";
         }
     }
 
