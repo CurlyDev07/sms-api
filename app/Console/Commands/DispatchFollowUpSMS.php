@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Jobs\SendFollowUpSMS;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;  // <-- Add this line
+use Illuminate\Support\Facades\Http;
 
 class DispatchFollowUpSMS extends Command
 {
