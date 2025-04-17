@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\CustomerFollowUp;
 use App\Models\SmsMessage;
 use App\Models\CustomerInfo;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,18 @@ class SmsController extends Controller
         ]);
     
         $customer = CustomerInfo::create($request->only('name', 'contact_number'));
+
+        $messages = SmsMessage::all();
+
+        return response()->json($messages);
+
+
+        // CustomerFollowup::create([
+        //     'name' => $request->name,
+        //     'contact_number' => $request->contact_number,
+        //     'sms_message_id' => 1, // Make sure this ID exists in sms_messages
+        //     'interval' => 3,
+        // ]);
 
         return response()->json([
             'message' => 'customer info created successfully!',
