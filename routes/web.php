@@ -39,6 +39,7 @@ Route::get('/', function () {
 
             if ($response->status == "00") {
                 $followUp->status = "sent";
+                $followUp->save(); // Save the updated status to the database
             }
 
         }
