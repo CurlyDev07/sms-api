@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Services\SmsService;
-
 use Illuminate\Console\Command;
 use App\Models\CustomerInfo;
 use App\Models\Event;
@@ -18,12 +17,24 @@ class DispatchFollowUpSMS extends Command
 
     public function handle()
     {
-        $now = Carbon::now()->toDateTimeString();
 
-        $smsService = new SmsService(); // or however you're calling your SMS API
-        $smsService->infoTextSend('09550090156', 'Test SMS sent every minute — ' . $now);
-    
-        $this->info('Test SMS sent!');
+        $now = Carbon::now()->toDateTimeString();
+        $sms ='Test SMS sent every minute — ' . $now;
+        
+        $sms_data = [
+            'UserID' => '669',
+            'ApiKey' => '207bb08817f8ab47ac813b6b8917de0d',
+            'Mobile' => '09550090156',
+            'SMS' => $sms,
+        ];
+
+        // Send the request using Laravel's HTTP client
+        $response = Http::post('https://api.myinfotxt.com/v2/send.php', $sms_data);
+
+
+        // $smsService = new SmsService(); // or however you're calling your SMS API
+        // $smsService->infoTextSend('09550090156', 'Test SMS sent every minute — ' . $now);
+        $this->info($response->json());
 
 
     
