@@ -35,7 +35,7 @@ class DispatchFollowUpSMS extends Command
 
         // $smsService = new SmsService(); // or however you're calling your SMS API
         // $smsService->infoTextSend('09550090156', 'Test SMS sent every minute — ' . $now);
-        $this->info($response->json());
+        $this->info(print_r($response->json(), true));
 
 
     
