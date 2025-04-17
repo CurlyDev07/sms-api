@@ -13,7 +13,7 @@ class CustomerFollowUp extends Model
 
     public function customerInfo()
     {
-        return $this->belongsTo(CustomerInfo::class, 'contact_number', 'contact_number');
+        return $this->belongsTo(CustomerInfo::class);
     }
 
     // Relationship to SmsMessage
