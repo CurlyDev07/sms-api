@@ -47,10 +47,13 @@ Route::get('/', function () {
                 if ($response->status == "00") {
                     $followUp->status = "sent";
                     $followUp->save(); // Save the updated status to the database
+                }else{
+                    $followUp->status = "failed";
+                    $followUp->save(); // Save the updated status to the database
                 }
             } else {
                 // Handle unexpected response structure (log or handle accordingly)
-                echo 'error';
+                Log::error("Unexpected response structure from infoTextSend: " . print_r($response, true));
             }
         }
     }

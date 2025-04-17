@@ -18,55 +18,21 @@ class DispatchFollowUpSMS extends Command
 
     public function handle()
     {
-        // $response = infoTextSend('09550090156', 'putang ina its working');
-        // $this->info('Test SMS sent!');
-// ==============================================================
+        $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
         
-        // $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
-
-        // foreach ($followUps as $followUp) {
-        //     $createdAt = Carbon::parse($followUp->created_at);
-        //     $now = Carbon::now();
-        //     $minutesPassed = $createdAt->diffInMinutes($now);
+        foreach ($followUps as $followUp) {
+            $createdAt = Carbon::parse($followUp->created_at);
+            $intervalMinutes = $followUp->smsMessage->interval;
         
-        //     $interval = $followUp->smsMessage->interval;
-        
-        //     echo "Minutes passed: {$minutesPassed} | Interval: {$interval}\n";
-        
-        //     // Optional: Check if it’s time to send the SMS
-        //     if ($minutesPassed >= $interval) {
-        //         echo "✅ Time to send SMS to {$followUp->contact_number}\n";
-        //     }
-        // }
-
-
-
-// ==============================================================
-
-
-        // $customers = CustomerInfo::all();
+            $scheduledTime = $createdAt->addMinutes($intervalMinutes);
+            $now = Carbon::now();
     
-        // $this->info("Found " . $customers->count() . " customers.");
+            $diffInMinutes = $now->diffInMinutes($scheduledTime, false); // Use false for absolute difference
     
-        // foreach ($customers as $customer) {
-        //     $daysSinceOrder = $customer->created_at->diffInDays($now);
-    
-        //     // Get all pending events for this contact number where days_interval matches
-        //     $events = Event::where('contact_number', $customer->contact_number)
-        //         ->where('status', 'pending')
-        //         ->where('days_interval', $daysSinceOrder)
-        //         ->get();
-    
-        //     $this->info("Found " . $events->count() . " events for contact number {$customer->contact_number}");
-    
-        //     foreach ($events as $event) {
-        //         SendFollowUpSMS::dispatch($event);
-        //     }
-    
-        //     if ($events->isEmpty()) {
-        //         Log::info("No event found for contact number {$customer->contact_number}");
-        //     }
-        // }
+            if ($now->greaterThanOrEqualTo($scheduledTime)) {
+                dispatch(new SendFollowUpSMS($followUp->id));
+            }
+        }
     
         $this->info('Follow-up SMS jobs dispatched!');
     }

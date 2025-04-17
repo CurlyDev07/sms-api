@@ -3,10 +3,10 @@
 namespace App\Jobs;
 
 use App\Services\SmsService;
-use App\Models\Event;
+use App\Models\CustomerFollowUp;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
@@ -15,34 +15,36 @@ class SendFollowUpSMS implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $event;
+    public $followUpId;
 
-    // Inject the SmsService
-    protected $smsService;
-
-    public function __construct(Event $event)
+    public function __construct($followUpId)
     {
-        $this->event = $event;
-        $this->smsService = new SmsService(); // Instantiate SmsService
+        $this->followUpId = $followUpId;
     }
 
-    public function handle(): void
+    public function handle()
     {
-        // Send SMS using SmsService
-        $response = $this->smsService->infoTextSend($this->event->contact_number, $this->event->message);
+        $followUp = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->find($this->followUpId);
 
-        // Check if the SMS was sent successfully (you can modify based on API response)
-        if ($response['status'] == 'success') {
-            // Update event status to 'sent' if the SMS was successful
-            $this->event->status = 'sent';
-            $this->event->save();
+        if (!$followUp) {
+            \Log::error("Follow-up not found with ID: " . $this->followUpId);
+            return;
+        }
 
-            Log::info("SMS sent successfully to {$this->event->contact_number}: {$this->event->message}");
+        $contact_number = $followUp->customerInfo->contact_number;
+        $message = $followUp->smsMessage->message;
+
+        $response = infoTextSend($contact_number, $message);
+
+        if (is_string($response)) {
+            $response = json_decode($response);
+        }
+
+        if (is_object($response) && isset($response->status)) {
+            $followUp->status = $response->status === "00" ? "sent" : "failed";
+            $followUp->save();
         } else {
-            // Handle failure (you can modify this based on actual API error response)
-            Log::error("Failed to send SMS to {$this->event->contact_number}: {$this->event->message}");
-            $this->event->status = 'failed';
-            $this->event->save();
+            \Log::error("Unexpected SMS response", (array)$response);
         }
     }
 }
