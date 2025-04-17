@@ -51,6 +51,15 @@ class SmsController extends Controller
         ], 201);
     }
 
+    public function get_sms_message(){
+        $messages = SmsMessage::all();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $messages
+        ]);
+    }
+
 
 
 }
