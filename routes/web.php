@@ -18,7 +18,7 @@ use Illuminate\Support\Carbon;
 Route::get('/', function () {
 
 
-    $response = infoTextSend('095500901', 'putang ina its working');
+    $response = infoTextSend('09550090156', 'putang ina its working');
     dd($response);
 
     $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
