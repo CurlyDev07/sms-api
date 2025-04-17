@@ -17,10 +17,6 @@ use Illuminate\Support\Carbon;
 
 Route::get('/', function () {
 
-
-    $response = infoTextSend('09550090156', 'putang ina its working');
-    dd($response);
-
     $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
 
     foreach ($followUps as $followUp) {
@@ -34,28 +30,14 @@ Route::get('/', function () {
 
 
         if ($now->greaterThanOrEqualTo($scheduledTime)) {
-            echo $diffInMinutes;
-            echo "<br>";
-            echo "✅ It's time to send SMS to {$followUp->contact_number}";
+        //    It's time to send SMS
+
+            $contact_number = $followUp->customerInfo->contact_number;
+            $message = $followUp->smsMessage->message;
+            $response = infoTextSend($contact_number, $message);
+
         }
-
-
-        // if ($now->greaterThanOrEqualTo($scheduledTime)) {
-        //     echo "✅ Time to send SMS to {$scheduledTime}\n <br>'";
-        //     echo "{$followUp->smsMessage->message_name}\n <br>'";
-        //     echo "{$followUp->smsMessage->message}\n <br>'";
-        //     echo "{$followUp->smsMessage->interval}\n <br>'";
-        //     echo "<hr>";
-        //     echo "{$followUp->customerInfo->name}\n <br>'";
-        //     echo "{$followUp->customerInfo->contact_number}\n <br>'";
-        //     echo '<br>';
-        //     // You can now trigger SMS or mark as sent
-        // } else {
-        //     echo "⏳ Not yet time for {$followUp->contact_number}\n <br>'";
-        //     echo '<br>';
-        // }
     }
-
 
     return view('welcome');
 });
