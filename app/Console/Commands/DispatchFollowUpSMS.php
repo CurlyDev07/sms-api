@@ -16,9 +16,12 @@ class DispatchFollowUpSMS extends Command
 
     public function handle()
     {
-        $now = Carbon::now()->toDateTimeString();;
+        $now = Carbon::now()->toDateTimeString();
 
-        $smsService->infoTextSend('09550090156', 'test sms if send every Minute --- '. $now);
+        $smsService = new SmsService(); // or however you're calling your SMS API
+        $smsService->infoTextSend('09550090156', 'Test SMS sent every minute — ' . $now);
+    
+        $this->info('Test SMS sent!');
 
 
     
