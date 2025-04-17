@@ -36,11 +36,21 @@ Route::get('/', function () {
 
             $response = infoTextSend($contact_number, $message);
 
-            if ($response->status == "00") {
-                $followUp->status = "sent";
-                $followUp->save(); // Save the updated status to the database
+              // Decode JSON string to object if it's a string
+            if (is_string($response)) {
+                $response = json_decode($response);
             }
 
+            // Check if $response is an object and has 'status' property
+            if (is_object($response) && isset($response->status)) {
+                if ($response->status == "00") {
+                    $followUp->status = "sent";
+                    $followUp->save(); // Save the updated status to the database
+                }
+            } else {
+                // Handle unexpected response structure (log or handle accordingly)
+                echo 'error';
+            }
         }
     }
 
