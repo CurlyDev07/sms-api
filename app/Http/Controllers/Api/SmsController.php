@@ -36,14 +36,12 @@ class SmsController extends Controller
         $validatedData = $request->validate([
             'message_name' => 'required|string|max:255',
             'message' => 'required|string',
-            'contact_number' => 'required|string|max:15',
             'interval' => 'required|integer',
         ]);
 
         $smsMessage = SmsMessage::create([
             'message_name' => $validatedData['message_name'],
             'message' => $validatedData['message'],
-            'contact_number' => $validatedData['contact_number'],
             'interval' => $validatedData['interval'],
         ]);
 
