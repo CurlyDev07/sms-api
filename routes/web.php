@@ -34,7 +34,12 @@ Route::get('/', function () {
 
             $contact_number = $followUp->customerInfo->contact_number;
             $message = $followUp->smsMessage->message;
+
             $response = infoTextSend($contact_number, $message);
+
+            if ($response->status == "00") {
+                $followUp->status = "sent";
+            }
 
         }
     }
