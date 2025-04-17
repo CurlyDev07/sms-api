@@ -60,6 +60,25 @@ class SmsController extends Controller
         ]);
     }
 
+    public function get_customer_follow_up(){
+        $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->get();
+
+        $data = $followUps->map(function ($followUp) {
+            return [
+                'name' => $followUp->customerInfo->name,
+                'contact_number' => $followUp->customerInfo->contact_number,
+                'message_name' => $followUp->smsMessage->message_name,
+                'interval' => $followUp->smsMessage->interval,
+                'status' => $followUp->status,
+            ];
+        });
+    
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
+    }
+
 
 
 }
