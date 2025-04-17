@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\SmsMessage;
 use App\Models\CustomerInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,12 +24,12 @@ class SmsController extends Controller
     }
     
     public function create_sms_message(Request $request){
-        $validatedData = $request->validate([
-            'message_name' => 'required|string|max:255',
-            'message' => 'required|string',
-            'contact_number' => 'required|string|max:15',
-            'interval' => 'required|integer',
-        ]);
+        // $validatedData = $request->validate([
+        //     'message_name' => 'required|string|max:255',
+        //     'message' => 'required|string',
+        //     'contact_number' => 'required|string|max:15',
+        //     'interval' => 'required|integer',
+        // ]);
 
         $smsMessage = SmsMessage::create([
             'message_name' => $validatedData['message_name'],
