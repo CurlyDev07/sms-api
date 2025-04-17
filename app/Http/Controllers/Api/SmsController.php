@@ -17,7 +17,7 @@ class SmsController extends Controller
         ]);
     
         $customer = CustomerInfo::create($request->only('name', 'contact_number'));
-        return $customer;
+        return $customer->id;
         // $messages = SmsMessage::all();
 
         // foreach ($messages as $follow_up_message) {
