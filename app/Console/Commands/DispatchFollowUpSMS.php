@@ -19,7 +19,7 @@ class DispatchFollowUpSMS extends Command
     {
         
 
-        $response = infoTextSend('09550090156', 'New Order '. request()->data['amount']);
+        $response = infoTextSend('09550090156', 'putang ina its working');
 
         // $now = Carbon::now()->toDateTimeString();
 
