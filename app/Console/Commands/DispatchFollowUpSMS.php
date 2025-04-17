@@ -9,7 +9,6 @@ use App\Models\Event;
 use App\Jobs\SendFollowUpSMS;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;  // <-- Add this line
-use Illuminate\Support\Facades\Http;
 
 class DispatchFollowUpSMS extends Command
 {
@@ -18,24 +17,15 @@ class DispatchFollowUpSMS extends Command
 
     public function handle()
     {
-
-        $now = Carbon::now()->toDateTimeString();
-        $sms ='Test SMS sent every minute — ' . $now;
         
-        $sms_data = [
-            'UserID' => '669',
-            'ApiKey' => '207bb08817f8ab47ac813b6b8917de0d',
-            'Mobile' => '09550090156',
-            'SMS' => $sms,
-        ];
+        $now = Carbon::now()->toDateTimeString();
 
-        // Send the request using Laravel's HTTP client
-        $response = Http::post('https://api.myinfotxt.com/v2/send.php', $sms_data);
+        $smsService = new SmsService(); // or however you're calling your SMS API
+        $smsService->infoTextSend('09550090156', 'Test SMS sent every minute — ' . $now);
+        
+        $this->info(print_r($smsService->json(), true));
 
-
-        // $smsService = new SmsService(); // or however you're calling your SMS API
-        // $smsService->infoTextSend('09550090156', 'Test SMS sent every minute — ' . $now);
-        $this->info(print_r($response->json(), true));
+        $this->info('Test SMS sent!');
 
 
     
