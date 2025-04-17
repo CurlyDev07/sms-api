@@ -4,8 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SmsController;
 
-Route::post('/create-customer-info', [SmsController::class, 'customer_info']);
-Route::post('/create-sms-message', [SmsController::class, 'storeSmsMessage']);
+Route::post('/create-customer-info', [SmsController::class, 'create_customer_info']);
+Route::post('/create-sms-message', [SmsController::class, 'create_sms_message']);
 
 
 
