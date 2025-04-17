@@ -20,15 +20,14 @@ class SmsController extends Controller
 
         $messages = SmsMessage::all();
 
-        return response()->json($messages);
-
-
-        // CustomerFollowup::create([
-        //     'name' => $request->name,
-        //     'contact_number' => $request->contact_number,
-        //     'sms_message_id' => 1, // Make sure this ID exists in sms_messages
-        //     'interval' => 3,
-        // ]);
+        foreach ($messages as $follow_up_message) {
+            CustomerFollowup::create([
+                'name' => $request->name,
+                'contact_number' => $request->contact_number,
+                'sms_message_id' => $follow_up_message->id, // Make sure this ID exists in sms_messages
+                'interval' => $follow_up_message->interval,
+            ]);
+        }
 
         return response()->json([
             'message' => 'customer info created successfully!',
