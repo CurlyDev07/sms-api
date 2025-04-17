@@ -21,7 +21,7 @@ function infoTextSend($mobile, $sms){
     ];
     
     $response = curl_req('https://api.myinfotxt.com/v2/send.php', $sms_data);
-    dd($response);
+    return $response;
 }
 
 ?>
