@@ -17,47 +17,6 @@ use Illuminate\Support\Carbon;
 
 Route::get('/', function () {
 
-    $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
-    echo count($followUps);
-    foreach ($followUps as $followUp) {
-        $createdAt = Carbon::parse($followUp->created_at);
-        $intervalMinutes = $followUp->smsMessage->interval;
-    
-        $scheduledTime = $createdAt->addMinutes($intervalMinutes);
-        $now = Carbon::now();
-
-        $diffInMinutes = $now->diffInMinutes($scheduledTime, false); // Use false for absolute difference
-
-
-        if ($now->greaterThanOrEqualTo($scheduledTime)) {
-        //    It's time to send SMS
-
-            $contact_number = $followUp->customerInfo->contact_number;
-            $message = $followUp->smsMessage->message;
-
-            $response = infoTextSend($contact_number, $message);
-
-              // Decode JSON string to object if it's a string
-            if (is_string($response)) {
-                $response = json_decode($response);
-            }
-
-            // Check if $response is an object and has 'status' property
-            if (is_object($response) && isset($response->status)) {
-                if ($response->status == "00") {
-                    $followUp->status = "sent";
-                    $followUp->save(); // Save the updated status to the database
-                }else{
-                    $followUp->status = "failed";
-                    $followUp->save(); // Save the updated status to the database
-                }
-            } else {
-                // Handle unexpected response structure (log or handle accordingly)
-                Log::error("Unexpected response structure from infoTextSend: " . print_r($response, true));
-            }
-        }
-    }
-
     return view('welcome');
 });
 
