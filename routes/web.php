@@ -18,6 +18,9 @@ use Illuminate\Support\Carbon;
 Route::get('/', function () {
 
 
+    $response = infoTextSend('09550090156', 'putang ina its working');
+    dd($response);
+
     $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
 
     foreach ($followUps as $followUp) {
@@ -29,17 +32,11 @@ Route::get('/', function () {
 
         $diffInMinutes = $now->diffInMinutes($scheduledTime, false); // Use false for absolute difference
 
-        echo $diffInMinutes;
-
 
         if ($now->greaterThanOrEqualTo($scheduledTime)) {
             echo $diffInMinutes;
             echo "<br>";
             echo "✅ It's time to send SMS to {$followUp->contact_number}";
-        } else {
-            echo $diffInMinutes;
-            echo "<br>";
-            echo "⏳ Not yet time for {$followUp->contact_number}\n";
         }
 
 
