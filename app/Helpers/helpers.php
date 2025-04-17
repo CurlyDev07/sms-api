@@ -15,7 +15,7 @@ function curl_req($url, $data){
 function infoTextSend($mobile, $sms){
     $sms_data = [
         'UserID' => '669',
-        'ApiKey' => '207bb08817f8ab47ac813b6b8917de0d',
+        'ApiKey' => env('INFO_TEXT_KEY'),
         'Mobile' => $mobile,
         'SMS' => $sms,
     ];
