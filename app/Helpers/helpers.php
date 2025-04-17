@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Support\Facades\Http;
 
 function curl_req($url, $data){
     $ch = curl_init($url);
@@ -20,7 +21,9 @@ function infoTextSend($mobile, $sms){
         'SMS' => $sms,
     ];
     
-    $response = curl_req('https://api.myinfotxt.com/v2/send.php', $sms_data);
+    $response = Http::post('https://api.myinfotxt.com/v2/send.php', $sms_data);
+
+    // $response = curl_req('https://api.myinfotxt.com/v2/send.php', $sms_data);
     return $response->json();
 }
 
