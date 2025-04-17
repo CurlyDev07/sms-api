@@ -20,7 +20,8 @@ function infoTextSend($mobile, $sms){
         'SMS' => $sms,
     ];
     
-    curl_req('https://api.myinfotxt.com/v2/send.php', $sms_data);
+    $response = curl_req('https://api.myinfotxt.com/v2/send.php', $sms_data);
+    return $response->json();
 }
 
 ?>
