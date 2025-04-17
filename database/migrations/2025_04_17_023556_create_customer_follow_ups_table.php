@@ -15,10 +15,10 @@ class CreateCustomerFollowUpsTable extends Migration
     {
         Schema::create('customer_follow_ups', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('contact_number');
+            $table->foreignId('customer_info_id')->constrained('customer_infos')->onDelete('cascade');
             $table->foreignId('sms_message_id')->constrained('sms_messages')->onDelete('cascade');
-            $table->integer('interval');
+            $table->enum('status', ['pending', 'sent', 'failed'])->default('pending');
+
             $table->timestamps();
         });
     }
