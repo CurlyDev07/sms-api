@@ -22,17 +22,16 @@ Route::get('/', function () {
 
     foreach ($followUps as $followUp) {
         $createdAt = Carbon::parse($followUp->created_at);
+        $intervalMinutes = $followUp->smsMessage->interval;
+    
+        $scheduledTime = $createdAt->addMinutes($intervalMinutes);
         $now = Carbon::now();
-        $minutesPassed = $createdAt->diffInMinutes($now);
     
-        $interval = $followUp->smsMessage->interval;
-    
-        echo "Minutes passed: {$minutesPassed} | Interval: {$interval}\n";
-    
-        // Optional: Check if it’s time to send the SMS
-        if ($minutesPassed >= $interval) {
+        if ($now->greaterThanOrEqualTo($scheduledTime)) {
             echo "✅ Time to send SMS to {$followUp->contact_number}\n";
-            echo "<br>";
+            // You can now trigger SMS or mark as sent
+        } else {
+            echo "⏳ Not yet time for {$followUp->contact_number}\n";
         }
     }
 
