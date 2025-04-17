@@ -28,7 +28,13 @@ Route::get('/', function () {
         $now = Carbon::now();
     
         if ($now->greaterThanOrEqualTo($scheduledTime)) {
-            echo "✅ Time to send SMS to {$followUp->contact_number}\n";
+            echo "✅ Time to send SMS to {$scheduledTime}\n";
+            echo "{$followUp->smsMessage->message_name}\n";
+            echo "{$followUp->smsMessage->message}\n";
+            echo "{$followUp->smsMessage->interval}\n";
+            echo "<hr>";
+            echo "{$followUp->customerInfo->name}\n";
+            echo "{$followUp->customerInfo->contact_number}\n";
             echo '<br>';
             // You can now trigger SMS or mark as sent
         } else {
