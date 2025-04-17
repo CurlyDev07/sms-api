@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use App\Services\SmsService;
+
 use Illuminate\Console\Command;
 use App\Models\CustomerInfo;
 use App\Models\Event;
