@@ -7,6 +7,7 @@ use App\Models\SmsMessage;
 use App\Models\CustomerInfo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SmsController extends Controller
 {
@@ -64,21 +65,22 @@ class SmsController extends Controller
         $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
 
         $data = $followUps->map(function ($followUp) {
+            $scheduledDate = $followUp->created_at->copy()->addDays($followUp->smsMessage->interval);
+            $daysRemaining = now()->diffInDays($scheduledDate, false); // false keeps negative value
+
             return [
                 'name' => $followUp->customerInfo->name,
                 'contact_number' => $followUp->customerInfo->contact_number,
                 'message_name' => $followUp->smsMessage->message_name,
-                'interval' => $followUp->smsMessage->interval,
+                'interval' => $daysRemaining,
                 'status' => $followUp->status,
             ];
         });
-    
+
         return response()->json([
             'status' => 'success',
-            'data' => $data
+            'data' => $data,
         ]);
-    }
-
-
+    }   
 
 }
