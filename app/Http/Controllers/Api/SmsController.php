@@ -68,7 +68,7 @@ class SmsController extends Controller
 
         // Check if the SmsMessage exists
         if (!$smsMessage) {
-            return response()->json(['error' => 'SMS Message not found']);
+            return response()->json(['error' => 'SMS Message not found'], 404);
         }
 
         // Update the SMS message details
