@@ -9,6 +9,7 @@ Route::post('/create-customer-info', [SmsController::class, 'create_customer_inf
 Route::post('/create-sms-message', [SmsController::class, 'create_sms_message']);
 Route::get('/get-sms-message', [SmsController::class, 'get_sms_message']);
 Route::post('/update-sms-message/{id}', [SmsController::class, 'update_sms_message']);
+Route::delete('/delete-sms-message/{id}', [SmsController::class, 'delete_sms_message']);
 
 Route::get('/get-customer-follow-up', [SmsController::class, 'get_customer_follow_up']);
 

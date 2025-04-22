@@ -88,6 +88,28 @@ class SmsController extends Controller
         
     }
 
+    public function delete_sms_message($id){
+        // Find the SMS message by ID
+        $smsMessage = SmsMessage::find($id);
+
+        // Check if the SMS message exists
+        if (!$smsMessage) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'SMS Message not found'
+            ], 404);
+        }
+
+        // Delete the SMS message
+        $smsMessage->delete();
+
+        // Return success response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'SMS Message deleted successfully'
+        ], 200);
+    }
+
 
 
     public function get_customer_follow_up(){
