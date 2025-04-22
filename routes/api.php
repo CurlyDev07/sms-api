@@ -5,8 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SmsController;
 
 Route::post('/create-customer-info', [SmsController::class, 'create_customer_info']);
+
 Route::post('/create-sms-message', [SmsController::class, 'create_sms_message']);
 Route::get('/get-sms-message', [SmsController::class, 'get_sms_message']);
+Route::post('/update-sms-message/{id}', [SmsController::class, 'update_sms_message']);
+
 Route::get('/get-customer-follow-up', [SmsController::class, 'get_customer_follow_up']);
 
 

@@ -61,6 +61,35 @@ class SmsController extends Controller
         ]);
     }
 
+    public function update_sms_message(Request $request, $id){
+
+        // Find the SmsMessage by ID
+        $smsMessage = SmsMessage::find($id);
+
+        // Check if the SmsMessage exists
+        if (!$smsMessage) {
+            return response()->json(['error' => 'SMS Message not found'], 404);
+        }
+
+        // Update the SMS message details
+        $smsMessage->message_name = $request->input('message_name');
+        $smsMessage->message = $request->input('message');
+        $smsMessage->interval = $request->input('interval');
+        $smsMessage->updated_at = now(); // Update the timestamp for the update
+
+        // Save the updated SMS message
+        $smsMessage->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'SMS message updated successfully',
+            'data' => $smsMessage
+        ]);
+        
+    }
+
+
+
     public function get_customer_follow_up(){
         $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
 
@@ -84,3 +113,5 @@ class SmsController extends Controller
     }   
 
 }
+
+
