@@ -61,6 +61,22 @@ class SmsController extends Controller
         ]);
     }
 
+    public function get_single_sms_message(){
+        $message = SmsMessage::find($id);
+
+        if (!$message) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'SMS Message not found',
+            ], 404);
+        }
+    
+        return response()->json([
+            'status' => 'success',
+            'data' => $message,
+        ]);
+    }
+
     public function update_sms_message(Request $request, $id){
 
         // Find the SmsMessage by ID
