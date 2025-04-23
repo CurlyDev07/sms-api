@@ -61,7 +61,7 @@ class SmsController extends Controller
         ]);
     }
 
-    public function get_single_sms_message(){
+    public function get_single_sms_message($id){
         $message = SmsMessage::find($id);
 
         if (!$message) {
