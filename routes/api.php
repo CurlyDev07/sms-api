@@ -4,6 +4,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SmsController;
 
+
+
+Route::options('{any}', function () {
+    return response()->json([], 200)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+})->where('any', '.*');
+
+
+
 Route::post('/create-customer-info', [SmsController::class, 'create_customer_info']);
 
 Route::post('/create-sms-message', [SmsController::class, 'create_sms_message']);
