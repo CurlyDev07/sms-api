@@ -126,8 +126,6 @@ class SmsController extends Controller
         ], 200);
     }
 
-
-
     public function get_customer_follow_up(){
         $followUps = CustomerFollowUp::with(['customerInfo', 'smsMessage'])->where('status', 'pending')->get();
 
