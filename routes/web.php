@@ -16,7 +16,7 @@ use App\Models\CustomerFollowUp;
 use Illuminate\Support\Carbon;
 
 Route::get('/', function () {
-
+    dd('test');
     return view('welcome');
 });
 
