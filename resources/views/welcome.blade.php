@@ -184,7 +184,6 @@
           <span class="text-sm text-gray-600">Target CPP</span>
           <span id="targetCpp" class="font-semibold"></span>
         </div>
-       
         <div class="flex flex-col p-2 border rounded bg-gray-50 text-center col-span-3">
           <span class="text-sm text-gray-600">Net Profit</span>
           <span id="netProfit" class="font-semibold"></span>
